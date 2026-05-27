@@ -1,10 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Post('google/signup')
+  async googleSignup(@Body('token') token: string, @Body('referral_code') referral_code: string) {
+    return this.authService.googleSignup(token, referral_code)
+  }
+  @Post('google/login')
+  async googleLogin(@Body('token') token: string) {
+    return this.authService.googleLogin(token)
+  }
 }

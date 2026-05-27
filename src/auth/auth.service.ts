@@ -5,8 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
 import { User, UserDocument } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
+import { configDotenv } from 'dotenv';
 // import { CreateAuthDto } from './dto/create-auth.dto';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
+configDotenv()
 
 
 export function generateUserID(): string {
@@ -131,16 +133,16 @@ export class AuthService {
 
     // Create new user if none exists
     if (!user) {
-      const userID = await this.generateUniqueUserID();
+      const userId = await this.generateUniqueUserID();
       const referredBy = await this.handleReferrer(referral_code);
 
       user = new this.userModel({
-        userID,
+        userId,
         email,
         googleId: sub,
         profileImage: picture,
         fullName: name,
-        referral_code: userID,
+        referral_code: userId,
         referredBy,
       });
 
