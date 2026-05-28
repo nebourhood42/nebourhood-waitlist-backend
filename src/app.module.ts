@@ -7,6 +7,7 @@ import { PassportModule } from '@nestjs/passport';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { config } from 'dotenv';
+import { ProfileModule } from './profile/profile.module';
 config()
 
 @Module({
@@ -19,7 +20,8 @@ config()
       secret: process.env.JWT_SECRET!,
       signOptions: { expiresIn: '30d' },
     }),
-    AuthModule
+    AuthModule,
+    ProfileModule
   ],
   controllers: [AppController],
   providers: [AppService],
