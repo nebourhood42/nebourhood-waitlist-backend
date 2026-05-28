@@ -5,6 +5,11 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @Get()
+  async getCheck(){
+    return 'checking auth route'
+  }
+
   @Post('google/signup')
   async googleSignup(@Body('token') token: string, @Body('referral_code') referral_code: string) {
     return this.authService.googleSignup(token, referral_code)
