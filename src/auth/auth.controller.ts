@@ -9,7 +9,7 @@ export class AuthController {
   async googleSignup(@Body('token') token: string, @Body('referral_code') referral_code: string) {
     return this.authService.googleSignup(token, referral_code)
   }
-  @Post('google/login')
+  @Post('google/signin')
   async googleLogin(@Body('token') token: string) {
     return this.authService.googleLogin(token)
   }
