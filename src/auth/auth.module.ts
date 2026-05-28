@@ -4,6 +4,8 @@ import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { OAuth2Client } from 'google-auth-library';
+import { config } from 'dotenv';
+config()
 
 @Module({
   imports: [
