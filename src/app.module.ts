@@ -21,7 +21,7 @@ config()
       signOptions: { expiresIn: '30d' },
     }),
     AuthModule,
-    // ProfileModule
+    ProfileModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, UseGuards, Req } from '@nest
 import { ProfileService } from './profile.service';
 // import { CreateProfileDto } from './dto/create-profile.dto';
 // import { UpdateProfileDto } from './dto/update-profile.dto';
-import { JwtAuthGuard } from 'src/common/strategies/jwt-auth.guard';
+import { JwtAuthGuard } from '../common/strategies/jwt-auth.guard';
 import {
   ApiBearerAuth,
   ApiOperation,
