@@ -22,6 +22,7 @@ async function bootstrap() {
     swaggerOptions: {
       persistAuthorization: true,
     },
+    jsonDocumentUrl: 'api-docs/json'
   });
 
   app.getHttpAdapter().get('/api-docs-json', (req, res) => {
