@@ -3,12 +3,22 @@ import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import * as bodyParser from 'body-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 config()
 
 const port = process.env.PORT || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const swaggerConfig = new DocumentBuilder()
+  .setTitle('Nebourhood Waitlist API')
+  .setDescription('API documentation for Nebourhood Waitlist used for integration')
+  .setVersion('1.0')
+  .build();
+
+  const documentFactory = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api-docs', app, documentFactory);
 
   app.use(
     bodyParser.urlencoded({

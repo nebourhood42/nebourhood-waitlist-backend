@@ -14,12 +14,12 @@ export class ProfileService {
   async getUserProfileByUserId(userId: string) {
     const existingUser = await this.userModel.findOne({ userId })
     if (!existingUser) throw new NotFoundException('User not Found');
-    return { ...existingUser.toObject(), sub: undefined, __v: undefined, _id: undefined }
+    return { ...existingUser.toObject(), googleId: undefined, __v: undefined, _id: undefined }
   }
 
   async getUserProfile(email: string) {
     const existingUser = await this.userModel.findOne({ email })
     if (!existingUser) throw new NotFoundException('User not Found');
-    return { ...existingUser.toObject(), sub: undefined, __v: undefined, _id: undefined }
+    return { ...existingUser.toObject(), googleId: undefined, __v: undefined, _id: undefined }
   }
 }
