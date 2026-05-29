@@ -25,10 +25,6 @@ async function bootstrap() {
     jsonDocumentUrl: 'api-docs/json'
   });
 
-  app.getHttpAdapter().get('/api-docs-json', (req, res) => {
-    res.json(document);
-  });
-
   app.use(
     bodyParser.urlencoded({
       limit: '10mb',
