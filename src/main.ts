@@ -18,7 +18,15 @@ async function bootstrap() {
   .build();
 
   const documentFactory = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('api-docs', app, documentFactory);
+  SwaggerModule.setup('api-docs', app, documentFactory, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  });
+
+  app.getHttpAdapter().get('/api-docs-json', (req, res) => {
+    res.json(document);
+  });
 
   app.use(
     bodyParser.urlencoded({
