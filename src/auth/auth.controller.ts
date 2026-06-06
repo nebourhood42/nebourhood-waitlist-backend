@@ -1,5 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Req, Res, Query } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { AuthGuard as Guard } from '@nestjs/passport';
 import {
   ApiTags,
   ApiOperation,
@@ -7,7 +8,7 @@ import {
   ApiBody,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { GoogleSigninDto, GoogleSignupDto } from './dto/create-auth.dto';
+import { GithubProfileDto, GoogleSigninDto, GoogleSignupDto, QuestionnaireDto } from './dto/create-auth.dto';
 
 
 
@@ -110,5 +111,39 @@ export class AuthController {
   })
   async googleLogin(@Body() body: GoogleSigninDto) {
     return this.authService.googleLogin(body.token)
+  }
+
+
+  @Get('github')
+  @UseGuards(Guard('github'))
+  githubLogin() {}
+
+  @Get('github/callback')
+  @UseGuards(Guard('github'))
+  async githubCallback(
+    @Req() req,
+    @Res() res,
+    @Query('referral_code') referral_code?: string,
+  ) {
+    const user = req.user;
+
+    const userdto: GithubProfileDto = {
+      email: user.email,
+      fullName: user.fullName,
+      profileImage: user.profileImage,
+      sub: user.sub
+    }
+
+    const { access_token } = await this.authService.githubAuth(userdto, referral_code)
+
+    return res.redirect(
+      `${process.env.FRONTEND_URL}/auth/success?token=${access_token}`,
+    );
+  }
+  
+
+  @Get('signin-questionnaire')
+  async signinQuestionnaire(@Body() questionnaireDto: QuestionnaireDto) {
+    return this.authService.signinQuestionnaire(questionnaireDto)
   }
 }

@@ -31,3 +31,22 @@ export class GoogleSigninDto {
   @IsNotEmpty()
   token!: string;
 }
+
+export class GithubProfileDto {
+
+  @IsString()
+  email!: string;
+
+  @IsString()
+  fullName!: string;
+
+  @IsString()
+  profileImage!: string;
+
+  @IsString()
+  sub!: string;
+}
+
+export class QuestionnaireDto {
+  
+}

@@ -6,6 +6,7 @@ import * as crypto from 'crypto';
 import { User, UserDocument } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { configDotenv } from 'dotenv';
+import { GithubProfileDto, QuestionnaireDto } from './dto/create-auth.dto';
 // import { CreateAuthDto } from './dto/create-auth.dto';
 // import { UpdateAuthDto } from './dto/update-auth.dto';
 configDotenv()
@@ -91,7 +92,7 @@ export class AuthService {
     if (!ticket) throw new UnauthorizedException('Invalid Google token');
 
     const { sub } = ticket;
-    const user = await this.userModel.findOne({ googleId: sub });
+    const user = await this.userModel.findOne({ sub: sub });
 
     if (!user) {
       throw new UnauthorizedException(
@@ -113,20 +114,20 @@ export class AuthService {
     let user = await this.userModel.findOne({ email });
 
     // If already linked to this Google → conflict
-    if (user?.googleId && user.googleId === sub) {
+    if (user?.sub && user.sub === sub) {
       throw new ConflictException('Account already exists. Please login.');
     }
 
     // If email linked to another Google account → block
-    if (user?.googleId && user.googleId !== sub) {
+    if (user?.sub && user.sub !== sub) {
       throw new UnauthorizedException(
         'Email already linked to another Google account',
       );
     }
 
-    // Link existing user without googleId
-    if (user && !user.googleId) {
-      user.googleId = sub;
+    // Link existing user without sub
+    if (user && !user.sub) {
+      user.sub = sub;
       user.profileImage = picture ?? user.profileImage;
       await user.save();
     }
@@ -139,7 +140,8 @@ export class AuthService {
       user = new this.userModel({
         userId,
         email,
-        googleId: sub,
+        sub: sub,
+        authProvider: 'google',
         profileImage: picture,
         fullName: name,
         referral_code: userId,
@@ -156,6 +158,44 @@ export class AuthService {
     return this.formatAuthResponse(user);
   }
 
-
   //end
+
+  // Github Service functionalities
+  //start
+  async githubAuth(profile: GithubProfileDto, referral_code?: string){
+    const { email, fullName, profileImage, sub } = profile;
+
+    if (!email) {
+      throw new BadRequestException('Account has no email');
+    }
+
+    // Find existing user by email
+    let user = await this.userModel.findOne({ email, sub });
+
+    if (!user) {
+      const userId = await this.generateUniqueUserID();
+      const referredBy = await this.handleReferrer(referral_code);
+
+      user = new this.userModel({
+        userId,
+        email,
+        sub,
+        authProvider: 'github',
+        profileImage,
+        fullName,
+        referral_code: userId,
+        referredBy,
+      });
+
+      await user.save();
+    }
+
+    return this.formatAuthResponse(user);
+  }
+
+  async signinQuestionnaire(questionnaireDto: QuestionnaireDto) {
+    
+  }
+
+
 }

@@ -13,11 +13,17 @@ export class User {
   @Prop({ type: String, required: true })
   fullName!: string
 
+  @Prop({ enum: ['google', 'github'], required: true })
+  authProvider!: string;
+
   @Prop({ type: String, unique: true, sparse: true })
-  googleId!: string;
+  sub!: string;
 
   @Prop({ type: String, default: '' })
   profileImage!: string;
+
+  @Prop({ type: Boolean, default: false })
+  firstTimeUser!: boolean;
 
   @Prop({ required: true })
   referral_code?: string;
