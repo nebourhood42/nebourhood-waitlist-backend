@@ -6,9 +6,7 @@ import * as crypto from 'crypto';
 import { User, UserDocument } from './schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { configDotenv } from 'dotenv';
-import { GithubProfileDto, QuestionnaireDto } from './dto/create-auth.dto';
-// import { CreateAuthDto } from './dto/create-auth.dto';
-// import { UpdateAuthDto } from './dto/update-auth.dto';
+import { GithubProfileDto } from './dto/create-auth.dto';
 configDotenv()
 
 
@@ -191,10 +189,6 @@ export class AuthService {
     }
 
     return this.formatAuthResponse(user);
-  }
-
-  async signinQuestionnaire(questionnaireDto: QuestionnaireDto) {
-    
   }
 
 

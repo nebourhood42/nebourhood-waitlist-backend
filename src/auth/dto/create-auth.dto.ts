@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, Max, Min } from 'class-validator';
 
 
 export class CreateAuthDto {}
@@ -47,6 +47,17 @@ export class GithubProfileDto {
   sub!: string;
 }
 
-export class QuestionnaireDto {
-  
+export class OnboardingDto {
+  @IsArray()
+  @IsString({ each: true })
+  crafts!: string[];
+
+  @IsInt()
+  @Min(0)
+  @Max(50)
+  yearsOfExperience!: number;
+
+  @IsArray()
+  @IsString({ each: true })
+  goals!: string[];
 }

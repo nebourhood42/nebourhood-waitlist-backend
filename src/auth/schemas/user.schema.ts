@@ -27,13 +27,15 @@ export class User {
 
   @Prop({ required: true })
   referral_code?: string;
-
+  
   @Prop({ default: null })
   referredBy?: string;
-
+  
   @Prop({ default: 0 })
   referral_count!: number;
-
+  
+  @Prop({ type: String, enum: OnboardingStatusEnum, default: OnboardingStatusEnum.NOT_STARTED })
+  onboardingStatus!: OnboardingStatus;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
