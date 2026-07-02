@@ -7,11 +7,15 @@ import { OAuth2Client } from 'google-auth-library';
 import { config } from 'dotenv';
 import { PassportModule } from '@nestjs/passport';
 import { GithubStrategy } from './strategies/github.strategy';
+import { UserCraft, UserCraftSchema } from './schemas/onboarding.schema';
 config()
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: UserCraft.name, schema: UserCraftSchema }
+    ]),
     PassportModule,
   ],
   controllers: [AuthController],

@@ -7,7 +7,7 @@ import { ONBOARDING_CRAFTS_LIST, ONBOARDING_GOALS_lIST } from 'src/common/consta
 export class UserCraft {
 
   @Prop({ type: String, required: true, unique: true, ref: 'User' })
-  userId!: string
+  userId!: string;
 
   @Prop({
       type: [String],
@@ -28,4 +28,5 @@ export class UserCraft {
 }
 
 
-export const UserSchema = SchemaFactory.createForClass(UserCraft);
+export const UserCraftSchema = SchemaFactory.createForClass(UserCraft);
+export interface UserCraftDocument extends UserCraft, Document {}
